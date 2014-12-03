@@ -5,23 +5,25 @@
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+	background-color: lightyellow;
 }
 th, td {
     padding: 5px;
     text-align: left;    
 }
+body{
+background-color: lightblue;
+}
 </style>
 </head>
 <body>
 <form method="post" >
-	<select name="selection">
-		<option value="option1">Show Password of Entered user (admin only function): </option>
-		<option value="option2">Show all food without an allergy: </option>
-		<option value="option3">Update User Password</option>
-		<option value="option4">Update Medication Information</option>
-		<option value="option5">Show personal user medication</option>
-		<option value="option6">Quit (press submit) </option>
-	</select>
+		<input type="radio" name="radio" value="option1">Show Password of Entered user (admin only function): </input><br>
+		<input type="radio" name="radio" value="option2">Show all food without an allergy: </input><br>
+		<input type="radio" name="radio" value="option3">Update User Password</input><br>
+		<input type="radio" name="radio" value="option4">Update Medication Information</input><br>
+		<input type="radio" name="radio" value="option5">Show personal user medication</input><br>
+		<input type="radio" name="radio" value="option6">Quit (press submit) </input><br>
 <input type="text" name="textinput"></input>
 <input type="text" name="textinput2"></input>
 <input type="submit" name="button" value="go"></input>
@@ -42,7 +44,7 @@ if ($conn->connect_error) {
 } 
 $input = $_POST["textinput"];
 $stuff = $_POST["textinput2"];
-$select = $_POST["selection"];
+$select = $_POST["radio"];
 
 
 $sql = "SELECT User_password FROM userinformation WHERE Name_first = '" .$input. "' AND Name_Last = '" .$stuff. "'";
@@ -51,8 +53,8 @@ $sql3 = "UPDATE userinformation SET User_password = '" .$stuff. "' WHERE User_pa
 $sql4=  "UPDATE usermedication SET medication_ID=" .$input. ", doseage = '10ml', doseage_instructions = 'Only when needed' WHERE medication_ID = " .$stuff. "";
 $sql5 = "SELECT * FROM user.personal_user_view WHERE User_ID =' " .$input. "'"; 
 if(isset($_POST['button'])){
-
-	if($select=='option1')
+if(isset($_POST['radio'])){
+	if($select=="option1")
 	{
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
@@ -64,8 +66,7 @@ if(isset($_POST['button'])){
 	} 
 	else {echo "0 results";}
 	}
-
-	else if($select=='option2')
+else if($select=='option2')
 	{
 	
 	$result = $conn->query($sql2);
@@ -151,7 +152,8 @@ if(isset($_POST['button'])){
 	sleep(2);
 	exit("good bye");
 }
-
+	 
+}
 }
 
 $conn->close();
